@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Tableau Kanban</title>
+  <meta name="description" content="Tableau Kanban en JavaScript natif : ajout, glisser-déposer, recherche et sauvegarde locale.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="app-head">
+    <div>
+      <h1>Tableau Kanban</h1>
+      <p class="sub">Organisez vos tâches par étape. Glissez une carte ou utilisez les flèches pour la déplacer.</p>
+    </div>
+    <div class="progress" aria-live="polite">
+      <div class="progress-text"><span id="progressPct">0 %</span> terminé</div>
+      <div class="bar"><span id="progressBar"></span></div>
+    </div>
+  </header>
+
+  <section class="toolbar">
+    <form id="addForm" class="add-form">
+      <label class="sr" for="taskTitle">Nouvelle tâche</label>
+      <input id="taskTitle" type="text" placeholder="Nouvelle tâche…" maxlength="120" autocomplete="off">
+      <label class="sr" for="taskPriority">Priorité</label>
+      <select id="taskPriority">
+        <option value="haute">Haute</option>
+        <option value="moyenne" selected>Moyenne</option>
+        <option value="basse">Basse</option>
+      </select>
+      <button type="submit" class="btn primary">Ajouter</button>
+    </form>
+    <div class="tools">
+      <label class="sr" for="search">Rechercher</label>
+      <input id="search" type="search" placeholder="Rechercher…" autocomplete="off">
+      <button id="clearDone" type="button" class="btn ghost">Vider « Terminé »</button>
+    </div>
+    <p id="formError" class="error" hidden>Écrivez un titre avant d'ajouter la tâche.</p>
+  </section>
+
+  <main class="board" id="board">
+    <section class="column" data-status="todo">
+      <header><h2>À faire</h2><span class="count" data-count="todo">0</span></header>
+      <div class="list" data-list="todo"></div>
+    </section>
+    <section class="column" data-status="doing">
+      <header><h2>En cours</h2><span class="count" data-count="doing">0</span></header>
+      <div class="list" data-list="doing"></div>
+    </section>
+    <section class="column" data-status="done">
+      <header><h2>Terminé</h2><span class="count" data-count="done">0</span></header>
+      <div class="list" data-list="done"></div>
+    </section>
+  </main>
+
+  <footer class="foot">Données enregistrées dans votre navigateur (localStorage). Touchez un titre pour le modifier.</footer>
+
+  <template id="cardTpl">
+    <article class="card" draggable="true">
+      <div class="card-top">
+        <span class="prio"></span>
+        <time class="date"></time>
+      </div>
+      <p class="title" contenteditable="true" spellcheck="false"></p>
+      <div class="card-actions">
+        <button type="button" class="icon" data-act="left" aria-label="Déplacer vers la gauche">←</button>
+        <button type="button" class="icon" data-act="right" aria-label="Déplacer vers la droite">→</button>
+        <button type="button" class="icon danger" data-act="delete" aria-label="Supprimer">Supprimer</button>
+      </div>
+    </article>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>
